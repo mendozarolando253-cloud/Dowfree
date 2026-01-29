@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>dowfree - Descarga Videos Sociales</title>
-    <meta name="description" content="Descarga videos de TikTok, Instagram, YouTube y más gratis">
-
-    <!-- PWA Config -->
-    <meta name="theme-color" content="#0f172a">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-10 -10 120 120%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><path d=%22M30 40 L50 65 L70 40%22 stroke=%22white%22 stroke-width=%228%22 fill=%22none%22/></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><path d=%22M30 40 L50 65 L70 40%22 stroke=%22white%22 stroke-width=%228%22 fill=%22none%22/></svg>">
-
-    <!-- Tailwind CSS CDN (optimizado) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Video Downloader Pro | Descarga Gratis</title>
+    <meta name="description" content="Descarga videos de TikTok, Instagram, YouTube, Facebook en HD. Rápido y gratuito.">
+    
+    <!-- PWA Configuration -->
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" href="./icon-192.png">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Video Downloader">
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -20,258 +23,298 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#10b981',
-                        dark: '#0f172a',
+                        'primary': '#8B5CF6',
+                        'primary-dark': '#7C3AED',
+                        'dark-bg': '#0F0F23',
+                        'dark-card': '#1A1A2E',
+                        'dark-border': '#2D2D4D'
+                    },
+                    fontFamily: {
+                        'sans': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']
                     }
                 }
             }
         }
     </script>
-
-    <!-- ANUNCIO VIGNETTE (PEGA AQUÍ TU SCRIPT) -->
+    
+    <!-- 🔥 MONETAG VIGNETTE AD SCRIPT - PEGA AQUÍ TU SCRIPT 🔥 -->
     <!-- 
-    Coloca aquí el script de Vignette Ad 
-    Ejemplo: <script src="https://adnetwork.com/vignette.js"></script>
+    <script src="https://cdn.monetag.com/vignette-script.js"></script>
     -->
-
-    <!-- Estilos críticos para renderizado inmediato -->
+    
     <style>
-        * {
+        /* Estilos críticos para iPhone */
+        @supports (-webkit-touch-callout: none) {
+            .safe-area-inset-bottom {
+                padding-bottom: env(safe-area-inset-bottom, 20px);
+            }
+            .min-h-screen-ios {
+                min-height: -webkit-fill-available;
+            }
+        }
+        
+        body {
             -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
+            background: #0F0F23;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-
-        body {
-            background-color: #0f172a;
-            color: #f1f5f9;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            overflow-x: hidden;
+        
+        .glass-effect {
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        /* Spinner animado */
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
         .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top: 3px solid #10b981;
             width: 40px;
             height: 40px;
-            animation: spin 1s linear infinite;
+            border: 3px solid rgba(139, 92, 246, 0.3);
+            border-radius: 50%;
+            border-top-color: #8B5CF6;
+            animation: spin 1s ease-in-out infinite;
         }
-
+        
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
-
-        /* Animación de pulso para botón */
+        
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+            50% { opacity: 0.5; }
         }
-
-        .pulse-animation {
-            animation: pulse 2s infinite;
+        
+        .ad-banner {
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
         }
-
-        /* Optimización de rendimiento */
-        .will-change-transform {
-            will-change: transform;
+        
+        .input-field {
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
         }
-
-        /* Estilos para modo oscuro forzado */
-        .dark-force {
-            color-scheme: dark;
+        
+        .input-field:focus {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
         }
-
-        /* Banner ad container */
-        .ad-container {
-            min-height: 100px;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
+        
+        .download-btn {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            transition: all 0.3s ease;
         }
-
-        /* Placeholder para anuncios */
-        .ad-placeholder {
-            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        
+        .download-btn:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
-<body class="dark-force min-h-screen">
-    <!-- Contenedor principal -->
-    <div class="max-w-md mx-auto px-4 pt-6 pb-24">
+<body class="text-white min-h-screen-ios">
+    <!-- Contenedor Principal -->
+    <div class="max-w-md mx-auto px-4 pt-8 pb-32 safe-area-inset-bottom">
+        
         <!-- Header -->
         <header class="text-center mb-8">
-            <div class="flex items-center justify-center mb-2">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-emerald-600 flex items-center justify-center mr-3">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex items-center justify-center mb-3">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center mr-3 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
                 </div>
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">dowfree</h1>
+                <h1 class="text-3xl font-bold gradient-text">Video Downloader Pro</h1>
             </div>
-            <p class="text-slate-400 text-sm">Descarga videos de redes sociales gratis</p>
+            <p class="text-gray-400 text-sm">Descarga videos HD de cualquier red social</p>
         </header>
-
-        <!-- ANUNCIO BANNER SUPERIOR (Auto-refresh cada 30s) -->
+        
+        <!-- Banner de Anuncio (Auto-Refresh) -->
         <div class="mb-8">
-            <div class="ad-container" id="ad-banner">
-                <div class="ad-placeholder w-full h-28 rounded-lg"></div>
-                <!-- 
-                El banner nativo se inyectará aquí automáticamente cada 30 segundos
-                Coloca tu script de banner nativo dentro de la función refreshAd() en script.js
-                -->
+            <div id="ad-banner" class="ad-banner rounded-2xl p-4 min-h-[120px] flex items-center justify-center">
+                <div class="text-center">
+                    <div class="spinner mx-auto mb-3"></div>
+                    <p class="text-gray-400 text-sm">Cargando anuncio...</p>
+                    <p class="text-xs text-gray-500 mt-1">Actualizado cada 30 segundos</p>
+                </div>
             </div>
         </div>
-
-        <!-- Tarjeta principal de descarga -->
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-slate-700/50 shadow-xl">
-            <h2 class="text-xl font-bold mb-6 text-center">Pegar Enlace del Video</h2>
-
+        
+        <!-- Tarjeta Principal -->
+        <div class="glass-effect rounded-3xl p-6 mb-8 shadow-2xl">
+            <h2 class="text-xl font-bold mb-6 text-center">Pega tu enlace aquí</h2>
+            
             <div class="space-y-6">
                 <!-- Input para URL -->
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">Enlace del video</label>
+                    <div class="flex items-center mb-2">
+                        <svg class="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                        </svg>
+                        <label class="text-sm font-medium text-gray-300">Enlace del video</label>
+                    </div>
+                    
                     <div class="relative">
                         <input 
                             type="url" 
-                            id="videoUrl" 
-                            placeholder="https://tiktok.com/@user/video/123456..." 
-                            class="w-full px-4 py-3.5 bg-slate-900/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            id="videoUrl"
+                            placeholder="https://tiktok.com/@user/video/..."
+                            class="w-full px-4 py-4 input-field rounded-xl text-white placeholder-gray-500 focus:outline-none"
                             autocomplete="off"
                             autocorrect="off"
+                            spellcheck="false"
+                        />
+                        <button 
+                            id="pasteBtn"
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-primary/20 text-primary text-xs rounded-lg hover:bg-primary/30 transition-colors"
                         >
-                        <div class="absolute right-3 top-3.5">
-                            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                            </svg>
-                        </div>
+                            Pegar
+                        </button>
                     </div>
-                    <p class="text-xs text-slate-500 mt-2">Soporta: TikTok, Instagram Reels, YouTube Shorts, etc.</p>
+                    
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        <span class="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full">TikTok</span>
+                        <span class="text-xs px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full">Instagram</span>
+                        <span class="text-xs px-3 py-1 bg-red-500/10 text-red-400 rounded-full">YouTube</span>
+                        <span class="text-xs px-3 py-1 bg-blue-600/10 text-blue-300 rounded-full">Facebook</span>
+                    </div>
                 </div>
-
-                <!-- Botón de descarga -->
+                
+                <!-- Botón de Descarga -->
                 <button 
                     id="downloadBtn"
-                    class="w-full py-4 bg-gradient-to-r from-primary to-emerald-600 text-white font-bold rounded-xl hover:opacity-90 active:scale-[0.99] transition-all duration-200 pulse-animation shadow-lg shadow-primary/20"
+                    class="w-full py-4 download-btn text-white font-bold rounded-xl pulse-animation"
                 >
                     <div class="flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         Descargar Video HD
                     </div>
                 </button>
-
-                <!-- Spinner de carga (oculto por defecto) -->
+                
+                <!-- Spinner de Carga -->
                 <div id="loadingSpinner" class="hidden flex-col items-center justify-center py-8">
                     <div class="spinner mb-4"></div>
-                    <p class="text-slate-300 font-medium">Procesando video...</p>
-                    <p class="text-sm text-slate-500 mt-2">Esto puede tardar unos segundos</p>
-                </div>
-
-                <!-- Resultado (oculto por defecto) -->
-                <div id="result" class="hidden bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-5 border border-slate-700">
-                    <div class="flex items-start mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center mr-4">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-white">¡Video listo!</h3>
-                            <p class="text-slate-400 text-sm">Tu video ha sido procesado correctamente</p>
-                        </div>
+                    <p class="text-gray-300 font-medium mb-1">Procesando video...</p>
+                    <p class="text-sm text-gray-500">Preparando descarga en máxima calidad</p>
+                    <div class="w-full bg-gray-800 rounded-full h-2 mt-4">
+                        <div id="progressBar" class="bg-primary h-2 rounded-full w-0 transition-all duration-3000"></div>
                     </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg">
-                            <span class="text-slate-400">Calidad:</span>
-                            <span class="font-medium text-white">HD (1080p)</span>
+                </div>
+                
+                <!-- Resultado -->
+                <div id="result" class="hidden">
+                    <div class="bg-gradient-to-br from-dark-card to-dark-border rounded-xl p-5 border border-dark-border">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white">¡Video listo!</h3>
+                                <p class="text-gray-400 text-sm">Preparado para descargar en HD</p>
+                            </div>
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg">
-                            <span class="text-slate-400">Tamaño:</span>
-                            <span class="font-medium text-white">15.3 MB</span>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-black/30 rounded-lg">
+                                <span class="text-gray-400">Calidad:</span>
+                                <span class="font-medium text-white">1080p HD</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-black/30 rounded-lg">
+                                <span class="text-gray-400">Formato:</span>
+                                <span class="font-medium text-white">MP4</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-black/30 rounded-lg">
+                                <span class="text-gray-400">Tamaño:</span>
+                                <span class="font-medium text-white">~25 MB</span>
+                            </div>
                         </div>
-                        <button id="fakeDownload" class="w-full mt-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-lg hover:opacity-90 active:scale-[0.99] transition-all duration-200">
-                            Descargar Ahora
-                        </button>
+                        
+                        <p class="text-xs text-gray-500 text-center mt-4">
+                            Si la descarga no inicia automáticamente, cierra la pestaña de anuncios
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Pasos de uso -->
-        <div class="bg-slate-800/30 rounded-2xl p-6 mb-8 border border-slate-700/30">
-            <h3 class="font-bold text-lg mb-4 text-center">Cómo usar dowfree</h3>
+        
+        <!-- Pasos de Uso -->
+        <div class="glass-effect rounded-3xl p-6 mb-8">
+            <h3 class="font-bold text-lg mb-4 text-center">Cómo descargar</h3>
             <div class="space-y-4">
                 <div class="flex items-start">
                     <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
                         <span class="text-primary font-bold text-sm">1</span>
                     </div>
-                    <p class="text-slate-300">Copia el enlace del video desde TikTok, Instagram, YouTube, etc.</p>
+                    <p class="text-gray-300">Copia el enlace del video desde cualquier red social</p>
                 </div>
                 <div class="flex items-start">
                     <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
                         <span class="text-primary font-bold text-sm">2</span>
                     </div>
-                    <p class="text-slate-300">Pega el enlace en el campo de arriba y haz clic en "Descargar"</p>
+                    <p class="text-gray-300">Pega el enlace arriba y haz clic en "Descargar Video HD"</p>
                 </div>
                 <div class="flex items-start">
                     <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
                         <span class="text-primary font-bold text-sm">3</span>
                     </div>
-                    <p class="text-slate-300">Espera 3 segundos y descarga el video en calidad HD</p>
+                    <p class="text-gray-300">Espera 3 segundos y se abrirá la página de descarga</p>
                 </div>
             </div>
         </div>
-
-        <!-- ANUNCIO BANNER INFERIOR -->
-        <div class="mt-8">
-            <div class="ad-container">
-                <div class="ad-placeholder w-full h-32 rounded-lg"></div>
-                <!-- 
-                Banner nativo secundario
-                -->
+        
+        <!-- Banner de Anuncio Inferior -->
+        <div class="glass-effect rounded-3xl p-4">
+            <div id="ad-banner-bottom" class="ad-banner rounded-2xl p-4 min-h-[100px] flex items-center justify-center">
+                <div class="text-center">
+                    <p class="text-gray-400 text-sm">Anuncio disponible</p>
+                    <p class="text-xs text-gray-500 mt-1">Cargando...</p>
+                </div>
             </div>
         </div>
-
+        
         <!-- Instalar PWA -->
-        <div id="installPWA" class="fixed bottom-20 left-4 right-4 bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-4 border border-slate-700 shadow-2xl hidden">
+        <div id="installPWA" class="fixed bottom-24 left-4 right-4 glass-effect rounded-2xl p-4 border border-dark-border shadow-2xl hidden">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-emerald-600 flex items-center justify-center mr-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center mr-3">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
                         </svg>
                     </div>
                     <div>
-                        <p class="font-bold text-white">Instalar dowfree</p>
-                        <p class="text-xs text-slate-400">Usa sin conexión y más rápido</p>
+                        <p class="font-bold text-white">Instalar App</p>
+                        <p class="text-xs text-gray-400">Usa sin internet y más rápido</p>
                     </div>
                 </div>
-                <button id="installBtn" class="px-4 py-2 bg-primary text-white font-medium rounded-lg hover:opacity-90">
+                <button id="installBtn" class="px-4 py-2 bg-primary text-white font-medium rounded-lg hover:opacity-90 transition-opacity">
                     Instalar
                 </button>
             </div>
         </div>
     </div>
-
-    <!-- ANUNCIO SOCIAL BAR (PEGA AQUÍ TU SCRIPT) -->
+    
+    <!-- 🔥 MONETAG SOCIAL BAR SCRIPT - PEGA AQUÍ TU SCRIPT 🔥 -->
     <!-- 
-    Coloca aquí el script de Social Bar 
-    Ejemplo: <script src="https://adnetwork.com/social-bar.js"></script>
+    <script src="https://cdn.monetag.com/social-bar.js"></script>
     -->
-
-    <!-- Scripts propios (cargados al final) -->
-    <script src="sw.js"></script>
-    <script src="script.js"></script>
+    
+    <!-- Scripts Propios -->
+    <script src="./sw.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
